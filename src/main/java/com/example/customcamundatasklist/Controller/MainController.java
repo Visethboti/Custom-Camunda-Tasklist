@@ -1,7 +1,6 @@
 package com.example.customcamundatasklist.Controller;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.customcamundatasklist.util.JsonToHtml;
 
@@ -23,7 +21,6 @@ import io.camunda.tasklist.dto.Form;
 import io.camunda.tasklist.dto.Task;
 import io.camunda.tasklist.dto.TaskList;
 import io.camunda.tasklist.dto.TaskState;
-import io.camunda.tasklist.dto.Variable;
 import io.camunda.tasklist.exception.TaskListException;
 
 @Controller
@@ -53,8 +50,8 @@ public class MainController {
 	}
 
 	@GetMapping("/GetTask")
-	@ResponseBody
-	public String getTask(@RequestParam("taskID") String taskID) throws JSONException, IOException, TaskListException {
+	public String getTask(@RequestParam("taskID") String taskID, Model model)
+			throws JSONException, IOException, TaskListException {
 
 //		String json = Files.readString(Paths.get("src/main/resources/Test-Form1.json"));
 
@@ -71,9 +68,9 @@ public class MainController {
 
 		// get task
 		Task task = client.getTask(taskID);
-		System.out.println(task.getId());
-		System.out.println(task.getFormKey());
-		List<Variable> variables = task.getVariables();
+		// System.out.println(task.getId());
+		// System.out.println(task.getFormKey());
+		// List<Variable> variables = task.getVariables();
 
 //		for (Variable v : variables) {
 //			System.out.println('\n' + v.getName());
@@ -88,16 +85,25 @@ public class MainController {
 
 		Form form = client.getForm(formId, processDefinitionId);
 		String schema = form.getSchema();
-		System.out.println(schema);
+		// System.out.println(schema);
 
 		JsonToHtml jsonToHtml = new JsonToHtml();
 		String htmlSTR = jsonToHtml.getHtml(schema);
 
-		return "<form action=\"/Tasklist/CompleteTask?taskID=" + taskID + "\"  method=\"post\">" + htmlSTR;
+		model.addAttribute("taskID", taskID);
+		model.addAttribute("formSchema", htmlSTR);
+
+		return "form-template";
+		// return "<form action=\"/Tasklist/CompleteTask?taskID=" + taskID + "\"
+		// method=\"post\">" + htmlSTR;
+	}
+
+	@PostMapping("/test")
+	public String test() {
+		return "home";
 	}
 
 	@PostMapping("/CompleteTask")
-	@ResponseBody
 	public String handleCompleteTask(@RequestParam Map<String, Object> map) throws JSONException, TaskListException {
 		// get taskID and remove from map
 		String taskID = (String) map.remove("taskID");
@@ -118,6 +124,6 @@ public class MainController {
 		// Finish Task
 		client.completeTask(taskID, map);
 
-		return "Success!";
+		return "redirect:/Tasklist";
 	}
 }
