@@ -24,7 +24,7 @@ import io.camunda.tasklist.dto.TaskState;
 import io.camunda.tasklist.exception.TaskListException;
 
 @Controller
-@RequestMapping("/Tasklist")
+@RequestMapping("Tasklist")
 public class MainController {
 
 	@GetMapping("")
@@ -107,6 +107,9 @@ public class MainController {
 	public String handleCompleteTask(@RequestParam Map<String, Object> map) throws JSONException, TaskListException {
 		// get taskID and remove from map
 		String taskID = (String) map.remove("taskID");
+
+		// remove crsf
+		map.remove("_csrf");
 
 		// Auth
 		SelfManagedAuthentication sma = new SelfManagedAuthentication().clientId("tasklist")

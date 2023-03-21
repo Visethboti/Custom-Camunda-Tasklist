@@ -22,6 +22,11 @@ public class DeployController {
 		return "start-process";
 	}
 
+	@PostMapping("/test")
+	public String test() {
+		return "home";
+	}
+
 	@PostMapping("/start")
 	public String startBPMN(@RequestParam("bpmn-model") String str) {
 

@@ -25,12 +25,9 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-devtools</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -46,11 +43,6 @@
 			<groupId>io.camunda</groupId>
 			<artifactId>camunda-tasklist-client-java</artifactId>
 			<version>1.6.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>com.squareup.okhttp3</groupId>
-		    <artifactId>okhttp</artifactId>
-		    <version>4.9.3</version>
 		</dependency>
 		<dependency>
 		    <groupId>org.json</groupId>

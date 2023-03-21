@@ -20,8 +20,9 @@
 <body style="background: #f0f0f0;">
 
 	<div class="container" >
-		<form th:action="@{/Tasklist/CompleteTask(taskID=${taskID})}" method="post" th:utext="${formSchema}">
-		
+		<form th:action="@{/Tasklist/CompleteTask(taskID=${taskID})}" method="POST" >
+			<div th:utext="${formSchema}"></div>
+			<input type="submit" value="Submit"><br>
 		</form>
 	</div>
 

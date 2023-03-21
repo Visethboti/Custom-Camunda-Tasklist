@@ -30,9 +30,7 @@ public class JsonToHtml {
 
 		// html.append("<!DOCTYPE html> <html xmlns:th=\"http://www.thymeleaf.org\">");
 
-		String formEnd, label, input;
-
-		formEnd = " <input type=\"submit\" value=\"Submit\"> </form>";
+		String label, input;
 
 		JSONArray array = (JSONArray) obj;
 		System.out.println("json array length:" + array.length());
@@ -46,7 +44,6 @@ public class JsonToHtml {
 			html.append(input);
 		}
 
-		html.append(formEnd);
 		// html.append("</html>");
 
 		return html.toString();

@@ -44,8 +44,8 @@ class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.authorizeHttpRequests().requestMatchers("/**").hasAnyRole("realm-role-employee", "realm-role-manager")
-				.anyRequest().permitAll();
+		http.authorizeHttpRequests().requestMatchers("/Tasklist/**", "/DeployBPMN/**")
+				.hasAnyRole("realm-role-employee", "realm-role-manager").anyRequest().permitAll();
 		http.oauth2Login(Customizer.withDefaults());
 		http.logout().addLogoutHandler(keycloakLogoutHandler).logoutSuccessUrl("/");
 		http.oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
