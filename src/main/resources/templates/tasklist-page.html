@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	
+	<title>Request Leave Process</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
+	<!-- Reference Bootstrap files -->
+	<link rel="stylesheet"
+		 href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+	
+	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body style="background: #f0f0f0;">
+
+	<div class="container" >
+		<a th:href="@{/logout}" class="btn btn-secondary btn-lg">logout</a>
+		
+		<table class="table table-bordered table-striped">
+    		<thead class="thead-dark">
+    			<tr>
+    				<th>Task ID</th>
+    				<th>Task Name</th>
+    				<th>Process Name</th>
+    				<th>Creation Date</th>
+    				<th>Action</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr th:each="tempTask: ${tasks}">
+    				<td th:text="${tempTask.Id}"/>
+    				<td th:text="${tempTask.Name}"/>
+    				<td th:text="${tempTask.ProcessName}"/>
+    				<td th:text="${tempTask.CreationTime}"/>
+    				<td>
+    					<a th:href="@{/GetTask(taskID=${tempTask.Id})}" class="btn btn-info btn-sm">
+	   						View
+	   					</a>
+    				</td>
+    			</tr>
+    		</tbody>
+    	</table>
+	</div>
+
+</body>
+</html>
