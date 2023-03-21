@@ -124,8 +124,12 @@ public class MainController {
 		// Claim Task
 		client.claim(taskID, auth.getName());
 
+		System.out.println("============ Successfully Create new Process Instance ==============");
+
 		// Finish Task
 		client.completeTask(taskID, map);
+
+		System.out.println("============ Successfully Completed Task ==============");
 
 		return "redirect:/Tasklist";
 	}
