@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,10 +27,10 @@ import io.camunda.tasklist.dto.Variable;
 import io.camunda.tasklist.exception.TaskListException;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/Tasklist")
 public class MainController {
 
-	@GetMapping("/Tasklist")
+	@GetMapping("")
 	public String listAllTasks(Model model) throws TaskListException {
 		// auth with tasklist
 		SelfManagedAuthentication sma = new SelfManagedAuthentication().clientId("tasklist")
@@ -41,7 +43,11 @@ public class MainController {
 		// get list of all review leave request task from tasklist
 		TaskList tasks = client.getTasks(false, TaskState.CREATED, 50);
 
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
 		model.addAttribute("tasks", tasks);
+		String userRole = auth.getAuthorities().iterator().next().getAuthority();
+		model.addAttribute("userRole", userRole);
 
 		return "tasklist-page";
 	}
@@ -69,11 +75,11 @@ public class MainController {
 		System.out.println(task.getFormKey());
 		List<Variable> variables = task.getVariables();
 
-		for (Variable v : variables) {
-			System.out.println('\n' + v.getName());
-			System.out.println(v.getType());
-			System.out.println(v.getId());
-		}
+//		for (Variable v : variables) {
+//			System.out.println('\n' + v.getName());
+//			System.out.println(v.getType());
+//			System.out.println(v.getId());
+//		}
 
 		// get form schema from task
 		String formKey = task.getFormKey();
@@ -87,7 +93,7 @@ public class MainController {
 		JsonToHtml jsonToHtml = new JsonToHtml();
 		String htmlSTR = jsonToHtml.getHtml(schema);
 
-		return "<form action=\"/CompleteTask?taskID=" + taskID + "\"  method=\"post\">" + htmlSTR;
+		return "<form action=\"/Tasklist/CompleteTask?taskID=" + taskID + "\"  method=\"post\">" + htmlSTR;
 	}
 
 	@PostMapping("/CompleteTask")
@@ -104,8 +110,10 @@ public class MainController {
 		CamundaTaskListClient client = new CamundaTaskListClient.Builder().shouldReturnVariables()
 				.taskListUrl("http://localhost:8082/").authentication(sma).build();
 
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
 		// Claim Task
-		client.claim(taskID, "Demo");
+		client.claim(taskID, auth.getName());
 
 		// Finish Task
 		client.completeTask(taskID, map);
