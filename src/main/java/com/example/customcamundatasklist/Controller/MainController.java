@@ -79,16 +79,19 @@ public class MainController {
 //		}
 
 		// get form schema from task
+		String htmlSTR = "";
 		String formKey = task.getFormKey();
-		String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
-		String processDefinitionId = task.getProcessDefinitionId();
+		if (formKey != null) {
+			String formId = formKey.substring(formKey.lastIndexOf(":") + 1);
+			String processDefinitionId = task.getProcessDefinitionId();
 
-		Form form = client.getForm(formId, processDefinitionId);
-		String schema = form.getSchema();
-		// System.out.println(schema);
+			Form form = client.getForm(formId, processDefinitionId);
+			String schema = form.getSchema();
+			// System.out.println(schema);
 
-		JsonToHtml jsonToHtml = new JsonToHtml();
-		String htmlSTR = jsonToHtml.getHtml(schema);
+			JsonToHtml jsonToHtml = new JsonToHtml();
+			htmlSTR = jsonToHtml.getHtml(schema);
+		}
 
 		model.addAttribute("taskID", taskID);
 		model.addAttribute("formSchema", htmlSTR);

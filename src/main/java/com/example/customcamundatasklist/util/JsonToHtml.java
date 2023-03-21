@@ -77,7 +77,12 @@ public class JsonToHtml {
 			break;
 		case "radio":
 			// loop to create input for each radio buttons
-			input = "<input type=\"radio\">";
+			JSONArray array = (JSONArray) component.get("values");
+			for (int i = 0; i < array.length(); i++) {
+				JSONObject c = (JSONObject) array.get(i);
+				input += "<input type=\"radio\" name=" + component.get("key") + " value=\"" + c.get("value") + "\">";
+				input += "<label>" + c.get("label") + "</label>";
+			}
 			break;
 		default:
 			System.out.println("Not supported component type: " + component.get("type"));

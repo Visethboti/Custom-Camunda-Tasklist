@@ -20,9 +20,10 @@
 <body style="background: #f0f0f0;">
 
 	<div class="container" >
+	<a th:href="@{/}" class="btn btn-secondary btn-lg">Home</a>
 		<form th:action="@{/DeployBPMN/start}" method="POST">
 			<label>BPMN XML here</label><br>
-			<textarea name="bpmn-model" rows="10" cols="80"></textarea><br>
+			<textarea name="bpmn-model" rows="30" cols="100"></textarea><br>
 			<input type="submit" value="Submit"><br>
 		</form>
 	</div>
