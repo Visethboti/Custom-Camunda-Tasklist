@@ -33,10 +33,10 @@ public class JsonToHtml {
 		String label, input;
 
 		JSONArray array = (JSONArray) obj;
-		System.out.println("json array length:" + array.length());
+		// System.out.println("json array length:" + array.length());
 		for (int i = 0; i < array.length(); i++) {
 			JSONObject component = (JSONObject) array.get(i);
-			System.out.println(component.get("type"));
+			// System.out.println(component.get("type"));
 			// System.out.println(array.get(i));
 			label = componentToLabel(component);
 			input = componentToInput(component);

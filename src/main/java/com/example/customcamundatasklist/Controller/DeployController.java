@@ -46,8 +46,20 @@ public class DeployController {
 		// get bpmn process id from str
 		int startOfHead = str.indexOf("<bpmn:process id="); // 18
 		int startIndex = startOfHead + 18; // starting index of process id in str
-		int endIndex = str.indexOf("\" isExecutable="); // ending index of process id in str
+		if (startOfHead == -1) {
+			startOfHead = str.indexOf("<bpmn2:process id=");
+			startIndex = startOfHead + 19;
+		}
+
+		// System.out.println("***************************" + startIndex);
+		// int endIndex = str.indexOf("\" isExecutable="); // ending index of process id
+		// in str
+		int endIndex = str.indexOf("\"", startIndex);
+
+		// System.out.println("***************************" + endIndex);
 		String processID = str.substring(startIndex, endIndex);
+
+		// System.out.println("***************************" + processID);
 
 		zeebeClient.newDeployResourceCommand().addResourceFromClasspath("BPMN/tempt.bpmn").send().join();
 
