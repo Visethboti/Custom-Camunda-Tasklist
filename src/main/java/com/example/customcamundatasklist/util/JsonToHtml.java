@@ -80,13 +80,15 @@ public class JsonToHtml {
 			input += "<input type=\"checkbox\" name=" + component.get("key") + "\">";
 			input += "<label>" + component.get("label") + "</label><br>";
 			break;
-		case "checklist":
+		case "checklist": // checklist currently do not work properly, it need to send an array of values
+							// instead of one value
 			// loop to create input for each radio buttons
 			input += "<label>" + component.get("label") + "</label><br>";
 			JSONArray array1 = (JSONArray) component.get("values");
 			for (int i = 0; i < array1.length(); i++) {
 				JSONObject c = (JSONObject) array1.get(i);
-				input += "<input type=\"checkbox\" name=" + c.get("key") + " value=\"" + c.get("value") + "\">";
+				input += "<input type=\"checkbox\" name=\"" + component.get("key") + "[]\" value=\"" + c.get("value")
+						+ "\">";
 				input += "<label>" + c.get("label") + "</label>";
 			}
 			break;
