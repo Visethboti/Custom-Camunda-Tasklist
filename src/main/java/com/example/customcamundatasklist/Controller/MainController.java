@@ -37,12 +37,15 @@ public class MainController {
 		CamundaTaskListClient client = new CamundaTaskListClient.Builder().shouldReturnVariables()
 				.taskListUrl("http://localhost:8082/").authentication(sma).build();
 
-		// get list of all review leave request task from tasklist
-		TaskList tasks = client.getTasks(false, TaskState.CREATED, 50);
-
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
+		// get list of all review leave request task from tasklist
+		TaskList tasks = client.getTasks(false, TaskState.CREATED, 50);
+		TaskList assignedTask = client.getAssigneeTasks(auth.getName(), TaskState.CREATED, 50);
+		// TaskList groupTask = client.getGroupTasks(null, null, null);
+
 		model.addAttribute("tasks", tasks);
+		model.addAttribute("assignedTask", assignedTask);
 		String userRole = auth.getAuthorities().iterator().next().getAuthority();
 		model.addAttribute("userRole", userRole);
 

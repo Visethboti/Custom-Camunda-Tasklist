@@ -23,6 +23,7 @@
 		<a th:href="@{/logout}" class="btn btn-secondary btn-lg">logout</a>
 		<a th:href="@{/}" class="btn btn-secondary btn-lg">Home</a>
 		<h2 th:text="${userRole}"></h2>
+		<h2>All Task</h2>
 		<table class="table table-bordered table-striped">
     		<thead class="thead-dark">
     			<tr>
@@ -35,6 +36,31 @@
     		</thead>
     		<tbody>
     			<tr th:each="tempTask: ${tasks}">
+    				<td th:text="${tempTask.Id}"/>
+    				<td th:text="${tempTask.Name}"/>
+    				<td th:text="${tempTask.ProcessName}"/>
+    				<td th:text="${tempTask.CreationTime}"/>
+    				<td>
+    					<a th:href="@{/Tasklist/GetTask(taskID=${tempTask.Id})}" class="btn btn-info btn-sm">
+	   						View
+	   					</a>
+    				</td>
+    			</tr>
+    		</tbody>
+    	</table>
+    	<h2>Assigned Task</h2>
+    	<table class="table table-bordered table-striped">
+    		<thead class="thead-dark">
+    			<tr>
+    				<th>Task ID</th>
+    				<th>Task Name</th>
+    				<th>Process Name</th>
+    				<th>Creation Date</th>
+    				<th>Action</th>
+    			</tr>
+    		</thead>
+    		<tbody>
+    			<tr th:each="tempTask: ${assignedTask}">
     				<td th:text="${tempTask.Id}"/>
     				<td th:text="${tempTask.Name}"/>
     				<td th:text="${tempTask.ProcessName}"/>

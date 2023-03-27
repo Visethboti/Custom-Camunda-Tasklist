@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.example.customcamundatasklist.util.DeployBPMNService;
+
 import io.camunda.zeebe.client.ZeebeClient;
 
 @Controller
@@ -20,6 +22,8 @@ public class DeployController {
 
 	@Autowired
 	private ZeebeClient zeebeClient;
+	@Autowired
+	private DeployBPMNService deployBPMNService;
 
 	@GetMapping("")
 	public String showBPMNpage() {
@@ -33,33 +37,18 @@ public class DeployController {
 	}
 
 	@PostMapping("/start")
-	public String startBPMN(@RequestParam("bpmn-model") String str) throws IOException {
+	public String startBPMN(@RequestParam("bpmn-model") String bpmnStr) throws IOException {
 
-		System.out.println(str);
+		// set isExecutable to true
+		bpmnStr = deployBPMNService.setBPMNExecutableTrue(bpmnStr);
+		// get processID from bpmn string
+		String processID = deployBPMNService.getProcessIDFromBPMN(bpmnStr);
 
 		// Save str as .bpmn file
 		ClassPathResource classpath = new ClassPathResource("BPMN/tempt.bpmn");
-		Files.writeString(classpath.getFile().toPath(), str, StandardCharsets.UTF_8);
+		Files.writeString(classpath.getFile().toPath(), bpmnStr, StandardCharsets.UTF_8);
 
 		System.out.println("=========== Successfully Write to file ============");
-
-		// get bpmn process id from str
-		int startOfHead = str.indexOf("<bpmn:process id="); // 18
-		int startIndex = startOfHead + 18; // starting index of process id in str
-		if (startOfHead == -1) {
-			startOfHead = str.indexOf("<bpmn2:process id=");
-			startIndex = startOfHead + 19;
-		}
-
-		// System.out.println("***************************" + startIndex);
-		// int endIndex = str.indexOf("\" isExecutable="); // ending index of process id
-		// in str
-		int endIndex = str.indexOf("\"", startIndex);
-
-		// System.out.println("***************************" + endIndex);
-		String processID = str.substring(startIndex, endIndex);
-
-		// System.out.println("***************************" + processID);
 
 		zeebeClient.newDeployResourceCommand().addResourceFromClasspath("BPMN/tempt.bpmn").send().join();
 
