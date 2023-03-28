@@ -92,6 +92,16 @@ public class JsonToHtml {
 				input += "<label>" + c.get("label") + "</label>";
 			}
 			break;
+		case "taglist":
+			input += "<label>" + component.get("label") + "</label><br>";
+			JSONArray array2 = (JSONArray) component.get("values");
+			input += "<select name=\"" + component.get("key") + "\">";
+			for (int i = 0; i < array2.length(); i++) {
+				JSONObject c = (JSONObject) array2.get(i);
+				input += "<option value=\"" + c.get("value") + "\">" + c.get("label") + "</option>";
+			}
+			input += "</select><br>";
+			break;
 		default:
 			System.out.println("Not supported component type: " + component.get("type"));
 			input = "<p>ERROR COMPONENT</p><br>";
