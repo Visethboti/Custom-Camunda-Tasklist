@@ -1,16 +1,14 @@
-package com.example.customcamundatasklist.util;
+package com.example.customcamundatasklist.service;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.stereotype.Service;
 
-public class JsonToHtml {
+@Service
+public class FormJsonToHtmlImpl implements FormJsonToHtml {
 
-	// Constructor
-	public JsonToHtml() {
-
-	}
-
+	@Override
 	public String getHtml(String strJsonData) throws JSONException {
 		return jsonToHtml(new JSONObject(strJsonData).get("components"));
 	}

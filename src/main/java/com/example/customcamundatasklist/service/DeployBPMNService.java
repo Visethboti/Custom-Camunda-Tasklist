@@ -1,4 +1,4 @@
-package com.example.customcamundatasklist.util;
+package com.example.customcamundatasklist.service;
 
 public interface DeployBPMNService {
 	public String getProcessIDFromBPMN(String bpmnStr);

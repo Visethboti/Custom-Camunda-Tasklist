@@ -2,10 +2,10 @@ package com.example.customcamundatasklist.Controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.json.JSONException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.customcamundatasklist.util.JsonToHtml;
+import com.example.customcamundatasklist.service.AuthRoleService;
+import com.example.customcamundatasklist.service.FormJsonToHtml;
 
 import io.camunda.tasklist.CamundaTaskListClient;
 import io.camunda.tasklist.auth.SelfManagedAuthentication;
@@ -28,6 +29,11 @@ import io.camunda.tasklist.exception.TaskListException;
 @Controller
 @RequestMapping("Tasklist")
 public class TasklistController {
+
+	@Autowired
+	FormJsonToHtml formJsonToHtml;
+	@Autowired
+	AuthRoleService authRoleService;
 
 	@GetMapping("")
 	public String listAllTasks(Model model) throws TaskListException {
@@ -42,16 +48,9 @@ public class TasklistController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		String userRole = auth.getAuthorities().iterator().next().getAuthority();
-		Iterator authItr = auth.getAuthorities().iterator();
-		ArrayList<String> userRealmRoles = new ArrayList<String>();
-		while (authItr.hasNext()) {
-			String tempRole = authItr.next().toString();
-			if (tempRole.contains("realm-role")) {
-				userRealmRoles.add(tempRole);
-			}
-		}
+		ArrayList<String> userRoleGroups = authRoleService.getUserRoleGroups(auth);
 
-		System.out.println("00000000000000  -  " + userRealmRoles);
+		System.out.println("00000000000000  -  " + userRoleGroups);
 
 		// get list of all review leave request task from tasklist
 		TaskList tasks = client.getTasks(false, TaskState.CREATED, 50);
@@ -98,10 +97,8 @@ public class TasklistController {
 
 			Form form = client.getForm(formId, processDefinitionId);
 			String schema = form.getSchema();
-			// System.out.println(schema);
 
-			JsonToHtml jsonToHtml = new JsonToHtml();
-			htmlSTR = jsonToHtml.getHtml(schema);
+			htmlSTR = formJsonToHtml.getHtml(schema);
 		}
 
 		model.addAttribute("taskID", taskID);

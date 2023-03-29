@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.example.customcamundatasklist.util.DeployBPMNService;
+import com.example.customcamundatasklist.service.DeployBPMNService;
 
 import io.camunda.zeebe.client.ZeebeClient;
 

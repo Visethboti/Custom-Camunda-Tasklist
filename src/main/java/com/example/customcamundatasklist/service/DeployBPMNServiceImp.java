@@ -1,4 +1,4 @@
-package com.example.customcamundatasklist.util;
+package com.example.customcamundatasklist.service;
 
 import org.springframework.stereotype.Service;
 
