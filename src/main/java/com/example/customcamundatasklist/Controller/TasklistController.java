@@ -1,6 +1,8 @@
 package com.example.customcamundatasklist.Controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -40,6 +42,16 @@ public class TasklistController {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
 		String userRole = auth.getAuthorities().iterator().next().getAuthority();
+		Iterator authItr = auth.getAuthorities().iterator();
+		ArrayList<String> userRealmRoles = new ArrayList<String>();
+		while (authItr.hasNext()) {
+			String tempRole = authItr.next().toString();
+			if (tempRole.contains("realm-role")) {
+				userRealmRoles.add(tempRole);
+			}
+		}
+
+		System.out.println("00000000000000  -  " + userRealmRoles);
 
 		// get list of all review leave request task from tasklist
 		TaskList tasks = client.getTasks(false, TaskState.CREATED, 50);
@@ -76,15 +88,6 @@ public class TasklistController {
 
 		// get task
 		Task task = client.getTask(taskID);
-		// System.out.println(task.getId());
-		// System.out.println(task.getFormKey());
-		// List<Variable> variables = task.getVariables();
-
-//		for (Variable v : variables) {
-//			System.out.println('\n' + v.getName());
-//			System.out.println(v.getType());
-//			System.out.println(v.getId());
-//		}
 
 		// get form schema from task
 		String htmlSTR = "";
