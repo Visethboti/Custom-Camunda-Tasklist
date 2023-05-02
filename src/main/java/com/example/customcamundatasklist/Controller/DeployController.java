@@ -54,6 +54,13 @@ public class DeployController {
 
 		System.out.println("=========== Successfully Deploy Process ============");
 
+//		start process with variable user_submitted, include name of the user that start the process
+//		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//		HashMap<String, String> map = new HashMap<String, String>();
+//		map.put("user_submitted", auth.getName());
+//		System.out.println(map);
+//		zeebeClient.newCreateInstanceCommand().bpmnProcessId(processID).latestVersion().variables(map).send().join();
+
 		zeebeClient.newCreateInstanceCommand().bpmnProcessId(processID).latestVersion().send().join();
 
 		System.out.println("============ Successfully Create new Process Instance ==============");
